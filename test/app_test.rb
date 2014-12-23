@@ -8,7 +8,7 @@ class AppTest < Minitest::Test
   include Workshop7
 
   def app
-    HackerNews.new
+    Rack::Lint.new(HackerNews.new)
   end
 
   def setup
