@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'rack/test'
+require 'rack/lint'
 require './lib/workshop7/hackernews'
 
 class AppTest < Minitest::Test
