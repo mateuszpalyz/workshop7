@@ -15,20 +15,26 @@ class AppTest < Minitest::Test
     get '/'
 
     assert last_response.ok?
+    assert_equal "Sinatra !!!", last_response.body
   end
 
   def test_getting_list_of_all_submitted_stories
-    skip
     get '/stories'
+    response = JSON.parse last_response.body
 
     assert last_response.ok?
+    assert 'application/json', last_response.content_type
+    assert_equal 1, response.first['id']
+    assert_equal 2, response.last['id']
   end
 
   def test_getting_a_single_story
-    skip
     get '/stories/1'
+    response = JSON.parse last_response.body
 
     assert last_response.ok?
+    assert 'application/json', last_response.content_type
+    assert_equal 1, response['id']
   end
 
   def test_submitting_a_new_story
