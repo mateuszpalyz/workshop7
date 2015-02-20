@@ -16,27 +16,11 @@ module Workshop7
 
     get '/stories' do
       content_type :json
-      [
-        {
-          id: 1,
-          title: 'Lorem ipsum',
-          url: 'http://www.lipsum.com/',
-        },
-        {
-          id: 2,
-          title: 'Ipsum Lorem',
-          url: 'http://www.ipsum.com',
-        },
-      ].to_json
+      Story.all.to_json
     end
 
     get '/stories/:id' do
-      content_type :json
-      {
-        id: 1,
-        title: 'Lorem ipsum',
-        url: 'http://www.lipsum.com/',
-      }.to_json
+      Story.find(params[:id]).to_json
     end
   end
 end
