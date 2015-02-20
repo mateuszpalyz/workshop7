@@ -2,6 +2,7 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'rack/lint'
 require 'workshop7/hackernews'
+require 'models/story'
 
 class AppTest < Minitest::Test
   include Rack::Test::Methods
@@ -9,6 +10,10 @@ class AppTest < Minitest::Test
 
   def app
     Rack::Lint.new(HackerNews.new)
+  end
+
+  def setup
+    Story.create!(title: 'Lorem ipsum', url: 'http://www.lipsum.com/')
   end
 
   def test_response
