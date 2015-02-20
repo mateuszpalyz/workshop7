@@ -49,10 +49,11 @@ class AppTest < Minitest::Test
   end
 
   def test_submitting_a_new_story
-    skip
-    post '/stories', {}
+    post '/stories', { title: 'Funny title', url: 'http://www.funny.com' }
+    response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
+    assert_equal 'Funny title', response['title']
   end
 
   def test_updating_a_story
