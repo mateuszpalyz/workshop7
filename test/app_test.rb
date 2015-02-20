@@ -28,13 +28,15 @@ class AppTest < Minitest::Test
   end
 
   def test_getting_list_of_all_submitted_stories
+    Story.create!(title: 'Ipsum lorem', url: 'http://www.ipsum.com/')
+
     get '/stories'
     response = JSON.parse last_response.body
 
     assert last_response.ok?
     assert 'application/json', last_response.content_type
-    assert_equal 1, response.first['id']
-    assert_equal 2, response.last['id']
+    assert_equal 'Lorem ipsum', response.first['title']
+    assert_equal 'Ipsum lorem', response.last['title']
   end
 
   def test_getting_a_single_story
@@ -43,7 +45,7 @@ class AppTest < Minitest::Test
 
     assert last_response.ok?
     assert 'application/json', last_response.content_type
-    assert_equal 1, response['id']
+    assert_equal 'Lorem ipsum', response['title']
   end
 
   def test_submitting_a_new_story
