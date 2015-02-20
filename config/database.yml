@@ -1,0 +1,13 @@
+default: &default
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
+  encoding: unicode
+
+development:
+  <<: *default
+  database: db/hacknews_development.sqlite3
+
+test:
+  <<: *default
+  database: db/hacknews_test.sqlite3
