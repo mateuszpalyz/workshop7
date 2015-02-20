@@ -3,6 +3,9 @@ require 'rack/test'
 require 'rack/lint'
 require 'workshop7/hackernews'
 require 'models/story'
+require 'database_cleaner'
+
+DatabaseCleaner.strategy = :truncation
 
 class AppTest < Minitest::Test
   include Rack::Test::Methods
@@ -13,6 +16,7 @@ class AppTest < Minitest::Test
   end
 
   def setup
+    DatabaseCleaner.start
     Story.create!(title: 'Lorem ipsum', url: 'http://www.lipsum.com/')
   end
 
@@ -82,5 +86,9 @@ class AppTest < Minitest::Test
     post '/users', {}
 
     assert_equal 201, last_response.status
+  end
+
+  def teardown
+    DatabaseCleaner.clean
   end
 end
