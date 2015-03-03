@@ -41,5 +41,14 @@ module Workshop7
           points: Story.find(params[:id]).points
         }.to_json
     end
+
+    delete '/stories/:id/votes' do
+      protected!
+
+      vote = Vote.find_by!(user_id: @user.id, story_id: params[:id])
+      vote.destroy
+
+      status 204
+    end
   end
 end
