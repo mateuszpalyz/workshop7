@@ -73,17 +73,23 @@ class AppTest < Minitest::Test
   end
 
   def test_upvoting_a_story
-    skip
-    put '/stories/1/votes', {}
+    authorize 'johnny', 'bravo'
+
+    put '/stories/1/votes', { point: 1 }
+    response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
+    assert_equal 1, response['points']
   end
 
   def test_downvoting_a_story
-    skip
-    put '/stories/1/votes', {}
+    authorize 'johnny', 'bravo'
+
+    put '/stories/1/votes', { point: -1 }
+    response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
+    assert_equal -1, response['points']
   end
 
   def test_undoing_a_vote
