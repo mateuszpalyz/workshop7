@@ -17,6 +17,7 @@ class AppTest < Minitest::Test
   def setup
     DatabaseCleaner.start
     Story.create!(title: 'Lorem ipsum', url: 'http://www.lipsum.com/', user_id: 1)
+    User.create(username: "johnny", password: "bravo")
   end
 
   def test_getting_list_of_all_submitted_stories
@@ -41,7 +42,7 @@ class AppTest < Minitest::Test
   end
 
   def test_submitting_a_new_story_with_correct_credentails
-    authorize 'admin', 'admin'
+    authorize 'johnny', 'bravo'
     post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }
     response = JSON.parse last_response.body
 
