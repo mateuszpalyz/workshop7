@@ -1,7 +1,10 @@
 module Workshop7
   require 'api/hackernews_base'
+  require 'api/helpers'
 
   class HackerNewsStories < HackerNewsBase
+    include Workshop7::Helpers
+
     get '/stories' do
       content_type :json
       Story.all.to_json
@@ -12,6 +15,8 @@ module Workshop7
     end
 
     post '/stories' do
+      protected!
+
       story = Story.create(title: params[:title], url: params[:url])
 
       status 201
