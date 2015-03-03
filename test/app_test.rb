@@ -77,9 +77,11 @@ class AppTest < Minitest::Test
   end
 
   def test_creating_a_user
-    post '/users', {}
+    post '/users', { username: 'John Doe', password: 'secret' }
+    response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
+    assert_equal 'John Doe', response['username']
   end
 
   def teardown
