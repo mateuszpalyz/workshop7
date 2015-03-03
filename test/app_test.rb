@@ -40,12 +40,28 @@ class AppTest < Minitest::Test
     assert_equal 'Lorem ipsum', response['title']
   end
 
-  def test_submitting_a_new_story
+  def test_submitting_a_new_story_with_correct_credentails
+    authorize 'admin', 'admin'
     post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }
     response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
     assert_equal 'Funny title', response['title']
+  end
+
+  def test_submitting_a_new_story_with_wrong_credentails
+    authorize 'bad', 'boy'
+    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }
+
+    assert_equal 401, last_response.status
+    assert_equal 'Basic realm="Restricted Area"', last_response.headers['WWW-Authenticate']
+  end
+
+  def test_submitting_a_new_story_without_credentails
+    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }
+
+    assert_equal 401, last_response.status
+    assert_equal 'Basic realm="Restricted Area"', last_response.headers['WWW-Authenticate']
   end
 
   def test_updating_a_story
