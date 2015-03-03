@@ -2,7 +2,6 @@ require 'minitest/autorun'
 require 'rack/test'
 require 'rack/lint'
 require 'api/hackernews'
-require 'models/story'
 require 'database_cleaner'
 
 DatabaseCleaner.strategy = :truncation

@@ -3,6 +3,8 @@ module Workshop7
   require 'json'
   require 'yaml'
   require 'active_record'
+  require 'models/story'
+  require 'models/user'
 
   class HackerNewsBase < Sinatra::Base
     configure do
