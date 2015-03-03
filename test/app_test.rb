@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require 'rack/test'
 require 'rack/lint'
-require 'workshop7/hackernews'
+require 'api/hackernews'
 require 'models/story'
 require 'database_cleaner'
 
@@ -18,13 +18,6 @@ class AppTest < Minitest::Test
   def setup
     DatabaseCleaner.start
     Story.create!(title: 'Lorem ipsum', url: 'http://www.lipsum.com/')
-  end
-
-  def test_response
-    get '/'
-
-    assert last_response.ok?
-    assert_equal "Sinatra !!!", last_response.body
   end
 
   def test_getting_list_of_all_submitted_stories
@@ -85,7 +78,6 @@ class AppTest < Minitest::Test
   end
 
   def test_creating_a_user
-    skip
     post '/users', {}
 
     assert_equal 201, last_response.status
