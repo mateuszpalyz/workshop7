@@ -17,11 +17,11 @@ class AppTest < Minitest::Test
 
   def setup
     DatabaseCleaner.start
-    Story.create!(title: 'Lorem ipsum', url: 'http://www.lipsum.com/')
+    Story.create!(title: 'Lorem ipsum', url: 'http://www.lipsum.com/', user_id: 1)
   end
 
   def test_getting_list_of_all_submitted_stories
-    Story.create!(title: 'Ipsum lorem', url: 'http://www.ipsum.com/')
+    Story.create!(title: 'Ipsum lorem', url: 'http://www.ipsum.com/', user_id: 1)
 
     get '/stories'
     response = JSON.parse last_response.body
@@ -42,7 +42,7 @@ class AppTest < Minitest::Test
   end
 
   def test_submitting_a_new_story
-    post '/stories', { title: 'Funny title', url: 'http://www.funny.com' }
+    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }
     response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
