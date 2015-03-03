@@ -5,6 +5,7 @@ module Workshop7
   require 'active_record'
   require 'models/story'
   require 'models/user'
+  require 'models/vote'
 
   class HackerNewsBase < Sinatra::Base
     configure do

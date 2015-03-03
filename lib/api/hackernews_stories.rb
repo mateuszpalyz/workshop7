@@ -27,5 +27,19 @@ module Workshop7
           url: story.url,
         }.to_json
     end
+
+    put '/stories/:id/votes' do
+      protected!
+
+      vote = Vote.find_or_initialize_by(user_id: @user.id, story_id: params[:id])
+      vote.point = params[:point]
+      vote.save
+
+      status 201
+      content_type :json
+        {
+          points: Story.find(params[:id]).points
+        }.to_json
+    end
   end
 end
