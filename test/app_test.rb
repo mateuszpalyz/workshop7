@@ -93,7 +93,9 @@ class AppTest < Minitest::Test
   end
 
   def test_undoing_a_vote
-    skip
+    Vote.create(user_id: 1, story_id: 1, point: 1)
+    authorize 'johnny', 'bravo'
+
     delete '/stories/1/votes'
 
     assert_equal 204, last_response.status
