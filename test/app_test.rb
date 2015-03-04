@@ -3,6 +3,7 @@ require 'rack/test'
 require 'rack/lint'
 require 'api/hackernews'
 require 'database_cleaner'
+require 'xmlsimple'
 
 DatabaseCleaner.strategy = :truncation
 
