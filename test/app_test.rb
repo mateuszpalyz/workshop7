@@ -65,11 +65,23 @@ class AppTest < Minitest::Test
     assert_equal 'Basic realm="Restricted Area"', last_response.headers['WWW-Authenticate']
   end
 
-  def test_updating_a_story
-    skip
-    patch '/stories/1', {}
+  def test_updating_a_story_that_belongs_to_the_user
+    authorize 'johnny', 'bravo'
+
+    patch '/stories/1', { title: 'Updated shiny title'}.to_json
+    response = JSON.parse last_response.body
 
     assert last_response.ok?
+    assert_equal 'Updated shiny title', response['title']
+  end
+
+  def test_updating_a_story_that_does_not_belong_to_the_user
+    User.create(username: "bad", password: "boy")
+    authorize 'bad', 'boy'
+
+    patch '/stories/1', { title: 'Updated shiny title'}.to_json
+
+    assert_equal 403, last_response.status
   end
 
   def test_upvoting_a_story
