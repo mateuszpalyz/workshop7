@@ -17,5 +17,9 @@ module Workshop7
       @user = User.find_by(username: username)
       @user.password == password if @user
     end
+
+    def updateable(story)
+      halt 403, 'Not authorized\n' unless story.user_id == @user.id
+    end
   end
 end
