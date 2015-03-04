@@ -1,10 +1,7 @@
 module Workshop7
   require 'api/hackernews_base'
-  require 'api/helpers'
 
   class HackerNewsStories < HackerNewsBase
-    include Workshop7::Helpers
-
     get '/stories' do
       content_type :json
       Story.all.to_json
