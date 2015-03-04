@@ -28,6 +28,23 @@ module Workshop7
         }.to_json
     end
 
+    patch '/stories/:id' do
+      protected!
+
+      story = Story.find(params[:id])
+      updateable(story)
+
+      story.update(JSON.parse request.body.read)
+
+      status 200
+      content_type :json
+        {
+          id: story.id,
+          title: story.title,
+          url: story.url,
+        }.to_json
+    end
+
     put '/stories/:id/votes' do
       protected!
 
