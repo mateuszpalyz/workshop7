@@ -3,12 +3,13 @@ module Workshop7
 
   class HackerNewsStories < HackerNewsBase
     get '/stories' do
-      content_type :json
-      Story.all.to_json
+      content_type format
+      convert_to_correct_format(Story.all)
     end
 
     get '/stories/:id' do
-      Story.find(params[:id]).to_json
+      content_type format
+      convert_to_correct_format(Story.find(params[:id]))
     end
 
     post '/stories' do
@@ -17,13 +18,14 @@ module Workshop7
       story = Story.create((JSON.parse request.body.read).merge user_id: @user.id)
 
       status 201
-      content_type :json
-        {
+      content_type format
+      data = {
           id: story.id,
           title: story.title,
           url: story.url,
           user_id: story.user_id,
-        }.to_json
+        }
+      convert_to_correct_format(data)
     end
 
     patch '/stories/:id' do
@@ -35,12 +37,13 @@ module Workshop7
       story.update(JSON.parse request.body.read)
 
       status 200
-      content_type :json
-        {
+      content_type format
+      data = {
           id: story.id,
           title: story.title,
           url: story.url,
-        }.to_json
+        }
+      convert_to_correct_format(data)
     end
 
     put '/stories/:id/votes' do
@@ -51,10 +54,11 @@ module Workshop7
       vote.save
 
       status 201
-      content_type :json
-        {
+      content_type format
+      data = {
           points: Story.find(params[:id]).points
-        }.to_json
+        }
+      convert_to_correct_format(data)
     end
 
     delete '/stories/:id/votes' do

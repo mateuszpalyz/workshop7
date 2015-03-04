@@ -6,11 +6,12 @@ module Workshop7
       user = User.create(JSON.parse request.body.read)
 
       status 201
-      content_type :json
-        {
+      content_type format
+      data = {
           id: user.id,
           username: user.username,
-        }.to_json
+        }
+      convert_to_correct_format(data)
     end
   end
 end
