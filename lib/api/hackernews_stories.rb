@@ -69,5 +69,9 @@ module Workshop7
 
       status 204
     end
+
+    get '/stories/:id/url' do
+      redirect Story.find(params[:id]).url, 303
+    end
   end
 end
