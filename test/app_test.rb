@@ -52,6 +52,12 @@ class AppTest < Minitest::Test
     assert_equal 'Lorem ipsum', response['title'].first
   end
 
+  def test_redirect_to_a_given_story
+    get '/stories/1/url'
+
+    assert_equal 303, last_response.status
+  end
+
   def test_submitting_a_new_story_with_correct_credentails
     authorize 'johnny', 'bravo'
     post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }.to_json
