@@ -21,5 +21,17 @@ module Workshop7
     def updateable(story)
       halt 403, 'Not authorized\n' unless story.user_id == @user.id
     end
+
+    def to_json_or_xml
+      ('to_' + format).to_sym
+    end
+
+    def convert_to_correct_format(data)
+      data.send(to_json_or_xml)
+    end
+
+    def format
+      request.accept.first.to_s == 'application/xml' ? 'xml' : 'json'
+    end
   end
 end
