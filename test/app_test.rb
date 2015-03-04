@@ -43,23 +43,24 @@ class AppTest < Minitest::Test
 
   def test_submitting_a_new_story_with_correct_credentails
     authorize 'johnny', 'bravo'
-    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }
+    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }.to_json
     response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
     assert_equal 'Funny title', response['title']
+    assert_equal 1, response['user_id']
   end
 
   def test_submitting_a_new_story_with_wrong_credentails
     authorize 'bad', 'boy'
-    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }
+    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }.to_json
 
     assert_equal 401, last_response.status
     assert_equal 'Basic realm="Restricted Area"', last_response.headers['WWW-Authenticate']
   end
 
   def test_submitting_a_new_story_without_credentails
-    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }
+    post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }.to_json
 
     assert_equal 401, last_response.status
     assert_equal 'Basic realm="Restricted Area"', last_response.headers['WWW-Authenticate']
@@ -87,7 +88,7 @@ class AppTest < Minitest::Test
   def test_upvoting_a_story
     authorize 'johnny', 'bravo'
 
-    put '/stories/1/votes', { point: 1 }
+    put '/stories/1/votes', { point: 1 }.to_json
     response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
@@ -97,7 +98,7 @@ class AppTest < Minitest::Test
   def test_downvoting_a_story
     authorize 'johnny', 'bravo'
 
-    put '/stories/1/votes', { point: -1 }
+    put '/stories/1/votes', { point: -1 }.to_json
     response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
@@ -114,7 +115,7 @@ class AppTest < Minitest::Test
   end
 
   def test_creating_a_user
-    post '/users', { username: 'John Doe', password: 'secret' }
+    post '/users', { username: 'John Doe', password: 'secret' }.to_json
     response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status

@@ -17,7 +17,7 @@ module Workshop7
     post '/stories' do
       protected!
 
-      story = Story.create(title: params[:title], url: params[:url])
+      story = Story.create((JSON.parse request.body.read).merge user_id: @user.id)
 
       status 201
       content_type :json
@@ -25,6 +25,7 @@ module Workshop7
           id: story.id,
           title: story.title,
           url: story.url,
+          user_id: story.user_id,
         }.to_json
     end
 
@@ -49,7 +50,7 @@ module Workshop7
       protected!
 
       vote = Vote.find_or_initialize_by(user_id: @user.id, story_id: params[:id])
-      vote.point = params[:point]
+      vote.point = (JSON.parse request.body.read)['point']
       vote.save
 
       status 201

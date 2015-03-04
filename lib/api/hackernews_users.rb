@@ -3,7 +3,7 @@ module Workshop7
 
   class HackerNewsUsers < HackerNewsBase
     post '/users' do
-      user = User.create(username: params[:username], password: params[:password])
+      user = User.create(JSON.parse request.body.read)
 
       status 201
       content_type :json
