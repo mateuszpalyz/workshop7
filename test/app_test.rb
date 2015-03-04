@@ -42,6 +42,16 @@ class AppTest < Minitest::Test
     assert_equal 'Lorem ipsum', response['title']
   end
 
+  def test_getting_a_single_story_as_xml
+    header 'Accept', 'application/xml'
+    get '/stories/1'
+    response = XmlSimple.xml_in last_response.body
+
+    assert last_response.ok?
+    assert 'application/xml', last_response.content_type
+    assert_equal 'Lorem ipsum', response['title'].first
+  end
+
   def test_submitting_a_new_story_with_correct_credentails
     authorize 'johnny', 'bravo'
     post '/stories', { title: 'Funny title', url: 'http://www.funny.com', user_id: 1 }.to_json
