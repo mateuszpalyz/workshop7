@@ -15,17 +15,17 @@ module Workshop7
     post '/stories' do
       protected!
 
-      story = Story.create((JSON.parse request.body.read).merge user_id: @user.id)
+      story = Story.new((JSON.parse request.body.read).merge user_id: @user.id)
 
-      status 201
-      content_type format
-      data = {
-          id: story.id,
-          title: story.title,
-          url: story.url,
-          user_id: story.user_id,
-        }
-      convert_to_correct_format(data)
+      if story.save
+        status 201
+        content_type format
+        convert_to_correct_format(story.as_json)
+      else
+        status 422
+        content_type format
+        convert_to_correct_format(story.errors)
+      end
     end
 
     patch '/stories/:id' do
