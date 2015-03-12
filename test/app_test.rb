@@ -105,7 +105,7 @@ class AppTest < Minitest::Test
   def test_upvoting_a_story
     authorize 'johnny', 'bravo'
 
-    put '/stories/1/votes', { point: 1 }.to_json
+    put '/stories/1/votes/up'
     response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
@@ -115,7 +115,7 @@ class AppTest < Minitest::Test
   def test_downvoting_a_story
     authorize 'johnny', 'bravo'
 
-    put '/stories/1/votes', { point: -1 }.to_json
+    put '/stories/1/votes/down'
     response = JSON.parse last_response.body
 
     assert_equal 201, last_response.status
@@ -126,7 +126,7 @@ class AppTest < Minitest::Test
     Vote.create(user_id: 1, story_id: 1, point: 1)
     authorize 'johnny', 'bravo'
 
-    delete '/stories/1/votes'
+    delete '/stories/1/votes/destroy'
 
     assert_equal 204, last_response.status
   end

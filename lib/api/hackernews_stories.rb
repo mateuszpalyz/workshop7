@@ -46,11 +46,11 @@ module Workshop7
       convert_to_correct_format(data)
     end
 
-    put '/stories/:id/votes' do
+    put '/stories/:id/votes/up' do
       protected!
 
       vote = Vote.find_or_initialize_by(user_id: @user.id, story_id: params[:id])
-      vote.point = (JSON.parse request.body.read)['point']
+      vote.point = 1
       vote.save
 
       status 201
@@ -61,7 +61,22 @@ module Workshop7
       convert_to_correct_format(data)
     end
 
-    delete '/stories/:id/votes' do
+    put '/stories/:id/votes/down' do
+      protected!
+
+      vote = Vote.find_or_initialize_by(user_id: @user.id, story_id: params[:id])
+      vote.point = -1
+      vote.save
+
+      status 201
+      content_type format
+      data = {
+          points: Story.find(params[:id]).points
+        }
+      convert_to_correct_format(data)
+    end
+
+    delete '/stories/:id/votes/destroy' do
       protected!
 
       vote = Vote.find_by!(user_id: @user.id, story_id: params[:id])
