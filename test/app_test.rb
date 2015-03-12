@@ -68,6 +68,15 @@ class AppTest < Minitest::Test
     assert_equal 1, response['user_id']
   end
 
+  def test_submitting_incorect_story_with_correct_credentials
+    authorize 'johnny', 'bravo'
+    post '/stories', { title: 'without url' }.to_json
+    response = JSON.parse last_response.body
+
+    assert_equal 422, last_response.status
+    assert_equal "can't be blank", response['url'].first
+  end
+
   def test_submitting_a_new_story_with_wrong_credentails
     authorize 'bad', 'boy'
     post '/stories', { title: 'Funny title', url: 'http://www.funny.com' }.to_json
