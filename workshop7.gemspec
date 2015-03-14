@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv-rails"
   spec.add_dependency "unicorn"
   spec.add_dependency "pg"
+  spec.add_dependency "bcrypt"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "rack-test"
   spec.add_development_dependency "database_cleaner"
