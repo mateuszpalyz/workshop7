@@ -68,7 +68,7 @@ class AppTest < Minitest::Test
     assert_equal 1, response['user_id']
   end
 
-  def test_submitting_incorect_story_with_correct_credentials
+  def test_submitting_incorrect_story_with_correct_credentials
     authorize 'johnny', 'bravo'
     post '/stories', { title: 'without url' }.to_json
     response = JSON.parse last_response.body
