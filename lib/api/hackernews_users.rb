@@ -8,7 +8,7 @@ module Workshop7
       if user.save
         status 201
         content_type format
-        convert_to_correct_format(user, except: [:password])
+        convert_to_correct_format(user, except: [:password_hash])
       else
         status 422
         content_type format
