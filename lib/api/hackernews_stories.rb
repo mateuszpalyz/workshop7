@@ -20,7 +20,7 @@ module Workshop7
       if story.save
         status 201
         content_type format
-        convert_to_correct_format(story.as_json)
+        convert_to_correct_format(story)
       else
         status 422
         content_type format

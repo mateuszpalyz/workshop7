@@ -26,8 +26,8 @@ module Workshop7
       ('to_' + format).to_sym
     end
 
-    def convert_to_correct_format(data)
-      data.send(to_json_or_xml)
+    def convert_to_correct_format(data, options={})
+      data.send(to_json_or_xml, options)
     end
 
     def format
