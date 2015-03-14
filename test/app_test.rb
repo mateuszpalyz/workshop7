@@ -148,6 +148,14 @@ class AppTest < Minitest::Test
     assert_equal 'John Doe', response['username']
   end
 
+  def test_submitting_incorrect_user
+    post '/users', { password: 'secret' }.to_json
+    response = JSON.parse last_response.body
+
+    assert_equal 422, last_response.status
+    assert_equal "can't be blank", response['username'].first
+  end
+
   def teardown
     DatabaseCleaner.clean
   end
