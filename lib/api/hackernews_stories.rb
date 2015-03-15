@@ -34,16 +34,15 @@ module Workshop7
       story = Story.find(params[:id])
       updateable(story)
 
-      story.update(JSON.parse request.body.read)
-
-      status 200
-      content_type format
-      data = {
-          id: story.id,
-          title: story.title,
-          url: story.url,
-        }
-      convert_to_correct_format(data)
+      if story.update(JSON.parse request.body.read)
+        status 200
+        content_type format
+        convert_to_correct_format(story)
+      else
+        status 422
+        content_type format
+        convert_to_correct_format(story.errors)
+      end
     end
 
     put '/stories/:id/votes/up' do

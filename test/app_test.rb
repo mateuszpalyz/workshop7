@@ -102,6 +102,16 @@ class AppTest < Minitest::Test
     assert_equal 'Updated shiny title', response['title']
   end
 
+  def test_updating_a_story_that_belongs_to_the_user_but_is_incorrect
+    authorize 'johnny', 'bravo'
+
+    patch '/stories/1', { title: nil}.to_json
+    response = JSON.parse last_response.body
+
+    assert_equal 422, last_response.status
+    assert_equal "can't be blank", response['title'].first
+  end
+
   def test_updating_a_story_that_does_not_belong_to_the_user
     User.create(username: "bad", password: "boy")
     authorize 'bad', 'boy'
