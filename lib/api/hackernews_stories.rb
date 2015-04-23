@@ -45,34 +45,24 @@ module Workshop7
       end
     end
 
-    put '/stories/:id/votes/up' do
+    put '/stories/:id/vote' do
       protected!
 
-      vote = Vote.find_or_initialize_by(user_id: @user.id, story_id: params[:id])
-      vote.point = 1
-      vote.save
+      point = (JSON.parse request.body.read)['point']
+      vote = Vote.find_or_initialize_by(user_id: @user.id, story_id: params[:id], point: point)
 
-      status 201
-      content_type format
-      data = {
-          points: Story.find(params[:id]).points
-        }
-      convert_to_correct_format(data)
-    end
-
-    put '/stories/:id/votes/down' do
-      protected!
-
-      vote = Vote.find_or_initialize_by(user_id: @user.id, story_id: params[:id])
-      vote.point = -1
-      vote.save
-
-      status 201
-      content_type format
-      data = {
-          points: Story.find(params[:id]).points
-        }
-      convert_to_correct_format(data)
+      if vote.save
+        status 201
+        content_type format
+        data = {
+            points: Story.find(params[:id]).points
+          }
+        convert_to_correct_format(data)
+      else
+        status 422
+        content_type format
+        convert_to_correct_format(vote.errors)
+      end
     end
 
     delete '/stories/:id/vote' do

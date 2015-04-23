@@ -141,6 +141,16 @@ class AppTest < Minitest::Test
     assert_equal 1, response['points']
   end
 
+  def test_upvoting_a_story_when_number_of_points_is_abused
+    authorize 'johnny', 'bravo'
+
+    3.times { put '/stories/1/vote', { point: 6 }.to_json }
+    response = JSON.parse last_response.body
+
+    assert_equal 422, last_response.status
+    assert_equal "is not included in the list", response['point'].first
+  end
+
   def test_downvoting_a_story
     authorize 'johnny', 'bravo'
 
@@ -159,6 +169,16 @@ class AppTest < Minitest::Test
 
     assert_equal 201, last_response.status
     assert_equal -1, response['points']
+  end
+
+  def test_downvoting_a_story_when_number_of_points_is_abused
+    authorize 'johnny', 'bravo'
+
+    3.times { put '/stories/1/vote', { point: -6 }.to_json }
+    response = JSON.parse last_response.body
+
+    assert_equal 422, last_response.status
+    assert_equal "is not included in the list", response['point'].first
   end
 
   def test_undoing_a_vote
