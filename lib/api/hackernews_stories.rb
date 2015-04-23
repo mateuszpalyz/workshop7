@@ -75,7 +75,7 @@ module Workshop7
       convert_to_correct_format(data)
     end
 
-    delete '/stories/:id/votes/destroy' do
+    delete '/stories/:id/vote' do
       protected!
 
       vote = Vote.find_by!(user_id: @user.id, story_id: params[:id])
