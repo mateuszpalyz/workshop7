@@ -2,7 +2,6 @@ module Workshop7
   require 'api/hackernews_base'
 
   class HackerNewsStories < HackerNewsBase
-    set :show_exceptions, :after_handler
 
     get '/stories' do
       content_type format
@@ -60,16 +59,6 @@ module Workshop7
 
     get '/stories/:id/url' do
       redirect Story.find(params[:id]).url, 303
-    end
-
-    error ActiveRecord::RecordInvalid do |invalid|
-      status 422
-      content_type format
-      convert_to_correct_format(invalid.record.errors)
-    end
-
-    error ActiveRecord::RecordNotFound do
-      status 422
     end
   end
 end
