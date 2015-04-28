@@ -30,16 +30,11 @@ module Workshop7
 
       story = Story.find(params[:id])
       updateable(story)
+      story.update!(JSON.parse request.body.read)
 
-      if story.update(JSON.parse request.body.read)
-        status 200
-        content_type format
-        convert_to_correct_format(story)
-      else
-        status 422
-        content_type format
-        convert_to_correct_format(story.errors)
-      end
+      status 200
+      content_type format
+      convert_to_correct_format(story)
     end
 
     put '/stories/:id/vote' do
