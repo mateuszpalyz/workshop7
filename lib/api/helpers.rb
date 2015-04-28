@@ -1,8 +1,8 @@
 module Workshop7
 
   module Helpers
-    def protected!
-      return if authorized?
+    def protected!(story=nil)
+      return if authorized? && updateable?(story)
       headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
       halt 401, 'Not authorized\n'
     end
@@ -18,8 +18,12 @@ module Workshop7
       @user.password == password if @user
     end
 
-    def updateable(story)
-      halt 403, 'Not authorized\n' unless story.user_id == @user.id
+    def updateable?(story)
+      if story && story.user_id != @user.id
+        halt 403, 'Not authorized\n'
+      else
+        true
+      end
     end
 
     def to_json_or_xml

@@ -26,10 +26,9 @@ module Workshop7
     end
 
     patch '/stories/:id' do
-      protected!
-
       story = Story.find(params[:id])
-      updateable(story)
+      protected!(story)
+
       story.update!(JSON.parse request.body.read)
 
       status 200
