@@ -52,6 +52,16 @@ class AppTest < Minitest::Test
     assert_equal 'Lorem ipsum', response['title'].first
   end
 
+  def test_quality_parameter_in_accept_header
+    header 'Accept', 'application/json;q=0.5,application/xml;q=0.8'
+    get '/stories/1'
+    response = XmlSimple.xml_in last_response.body
+
+    assert last_response.ok?
+    assert 'application/xml', last_response.content_type
+    assert_equal 'Lorem ipsum', response['title'].first
+  end
+
   def test_redirect_to_a_given_story
     get '/stories/1/url'
 
