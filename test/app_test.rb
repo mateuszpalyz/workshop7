@@ -190,6 +190,14 @@ class AppTest < Minitest::Test
     assert_equal 204, last_response.status
   end
 
+  def test_undoing_a_vote_that_does_not_exsist
+    authorize 'johnny', 'bravo'
+
+    delete '/stories/1/vote'
+
+    assert_equal 422, last_response.status
+  end
+
   def test_creating_a_user
     post '/users', { username: 'John Doe', password: 'secret' }.to_json
     response = JSON.parse last_response.body
